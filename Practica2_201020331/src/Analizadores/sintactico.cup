@@ -1,0 +1,51 @@
+package Analizadores; 
+
+import Logica.Nodo;
+import java_cup.runtime.*;
+
+parser code 
+{: 
+
+//variables utilizadas para el analisis sintactico
+private boolean estado = true;
+private Nodo raiz;
+
+
+public boolean getEstado(){
+	return estado;
+}
+
+public Nodo getRaiz(){
+	return raiz;
+}
+
+public void recorrer(Nodo raiz){
+	if(!raiz.getHijo().isEmpty()){
+		recorrer(raiz.getHijo().get(0));
+	}
+	System.out.println(raiz.getValor());
+}
+
+/**Metodo al que se llama automáticamente ante algún error sintactico.*/ 
+public void syntax_error(Symbol s){ 
+ //System.out.println("Error en la Línea " + (s.right+1) +" Columna " +s.left+ ". Identificador " +s.value + " no reconocido." ); 
+
+} 
+ /**Metodo al que se llama en el momento en que ya no es posible una recuperación de errores.*/ 
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+	System.out.println("Error en la Línea " + (s.right+1) +" Columna " +s.left+ ". Identificador " +s.value + " no reconocido." ); 
+} 
+:} 
+
+terminal String r_importar, r_char, r_char_asterisco, r_do, r_else, r_for, r_float, r_if, r_int, r_main, r_switch, r_while, s_igual, s_dos_puntos, s_punto_coma, s_coma, s_suma, s_resta, s_mayor_igual, s_menor_igual, s_comparacion, s_diferencia, s_division, s_multiplicacion, s_porcentaje, s_mayor_que, s_menor_que, s_incremento, s_decremento, s_sumar_a, s_restar_a, s_multiplicar_a, s_llave_abrir, s_llave_cerrar, s_parentesis_abrir, s_parentesis_cerrar, identificador, libreria, numero;
+
+non terminal Nodo INICIO, INCLUDES, LIBRERIA;
+  
+start with INICIO;  
+
+INICIO ::= INCLUDES:i{:raiz = new Nodo("Inicio"); raiz.getHijo().add(i); recorrer(raiz);:};
+
+INCLUDES ::= INCLUDES:i LIBRERIA:l {:i.getHijo().add(l); RESULT = i;:}
+			|LIBRERIA:l{:Nodo padre = new Nodo("Include"); padre.getHijo().add(l); RESULT = padre;:};
+
+LIBRERIA ::= r_importar libreria:l {:Nodo padre = new Nodo("Libreria"); Nodo hijo = new Nodo(l); padre.getHijo().add(hijo); RESULT = padre;:};

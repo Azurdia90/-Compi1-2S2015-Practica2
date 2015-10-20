@@ -1,29 +1,53 @@
 package Analizadores; 
 
 import Logica.Nodo;
+import java.io.File;
 import java_cup.runtime.*;
+import java.io.PrintWriter;
+import javax.swing.JOptionPane;
 
 parser code 
 {: 
 
 //variables utilizadas para el analisis sintactico
-private boolean estado = true;
+private int id = 1;
 private Nodo raiz;
-
-
-public boolean getEstado(){
-	return estado;
-}
+private PrintWriter escribir;
+private File grafica;
 
 public Nodo getRaiz(){
 	return raiz;
 }
 
+public void imprimir(Nodo raiz){
+	try{
+		String path = "C:\\RECURSOS_PRACTICA\\ArbolAST.dot";
+		grafica = new File(path);
+		escribir = new PrintWriter(grafica);
+		escribir.println("digraph Arbol {\n");
+		recorrer(raiz);
+		escribir.println("}");
+		escribir.close();
+		Runtime.getRuntime().exec("CMD /C C:\\Grapvhiz\\bin\\dot -Tjpg C:\\RECURSOS_PRACTICA\\ArbolAST.dot -o C:\\RECURSOS_PRACTICA\\ArbolAST.jpg");
+	}catch(Exception e){
+        JOptionPane.showMessageDialog(null, "Error al escribir archivo dot: " + e);
+    }    
+}
+
 public void recorrer(Nodo raiz){
+	int cont = 0;
+	escribir.println(raiz.getId()+"[shape=ellipse,color=green,fontcolor=black,stile=filled,label=\""+raiz.getValor()+"\"];\n");
 	if(!raiz.getHijo().isEmpty()){
-		recorrer(raiz.getHijo().get(0));
+		for(cont = 0; cont < raiz.getHijo().size(); cont++){
+			recorrer(raiz.getHijo().get(cont));
+		}
+		escribir.println(raiz.getId() +"->"+ raiz.getHijo().get(0).getId()+"\n"); 
+		for(cont = 1; cont < raiz.getHijo().size(); cont++){
+			escribir.println(raiz.getHijo().get(cont-1).getId() +"->"+ raiz.getHijo().get(cont).getId()+"\n"); 
+		}
 	}
-	System.out.println(raiz.getValor());
+
+
 }
 
 /**Metodo al que se llama automáticamente ante algún error sintactico.*/ 
@@ -37,15 +61,288 @@ public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
 } 
 :} 
 
-terminal String r_importar, r_char, r_char_asterisco, r_do, r_else, r_for, r_float, r_if, r_int, r_main, r_switch, r_while, s_igual, s_dos_puntos, s_punto_coma, s_coma, s_suma, s_resta, s_mayor_igual, s_menor_igual, s_comparacion, s_diferencia, s_division, s_multiplicacion, s_porcentaje, s_mayor_que, s_menor_que, s_incremento, s_decremento, s_sumar_a, s_restar_a, s_multiplicar_a, s_llave_abrir, s_llave_cerrar, s_parentesis_abrir, s_parentesis_cerrar, identificador, libreria, numero;
+terminal String r_importar, r_char, r_char_asterisco, r_do, r_else, r_for, r_float, r_if, r_int, r_main, r_switch, r_while, s_igual, 
+s_dos_puntos, s_comilla, s_punto_coma, s_coma, s_suma, s_resta, s_mayor_igual, s_menor_igual, s_comparacion, s_diferencia, s_division, 
+s_multiplicacion, s_porcentaje, s_mayor_que, s_menor_que, s_incremento, s_decremento, s_sumar_a, s_restar_a, s_multiplicar_a, 
+s_llave_abrir, s_llave_cerrar, s_parentesis_abrir, s_parentesis_cerrar, identificador, libreria, numero;
 
-non terminal Nodo INICIO, INCLUDES, LIBRERIA;
-  
+non terminal Nodo INICIO, ARCHIVO_ENTRADA, INCLUDE, LIBRERIA, DECLARAR_VARIABLES, VARIABLE1, LISTA_VARIABLES2, VARIABLE2, 
+OPERACION_ARITMETICA, OPERACION_ARITMETICA2, OPERACION_ARITMETICA3, OPERACION_RELACIONAL, OPERACION_INC_DEC, OPERACION_ASIGNACION;
+
+non terminal String TIPO_VARIABLE, OPERADOR_RELACIONAL, OPERADOR_ASIGNACION;
+
 start with INICIO;  
 
-INICIO ::= INCLUDES:i{:raiz = new Nodo("Inicio"); raiz.getHijo().add(i); recorrer(raiz);:};
+INICIO ::= ARCHIVO_ENTRADA{:imprimir(raiz);:};
 
-INCLUDES ::= INCLUDES:i LIBRERIA:l {:i.getHijo().add(l); RESULT = i;:}
-			|LIBRERIA:l{:Nodo padre = new Nodo("Include"); padre.getHijo().add(l); RESULT = padre;:};
+ARCHIVO_ENTRADA ::= INCLUDE:i 
+					{:
+						raiz = new Nodo("Inicio",0); 
+						raiz.getHijo().add(i);
+					:}
+					|INCLUDE:i DECLARAR_VARIABLES:v 
+					{:
+						raiz = new Nodo("Inicio",id++); 
+						raiz.getHijo().add(i); 
+						raiz.getHijo().add(v);
+					:};
 
-LIBRERIA ::= r_importar libreria:l {:Nodo padre = new Nodo("Libreria"); Nodo hijo = new Nodo(l); padre.getHijo().add(hijo); RESULT = padre;:};
+INCLUDE ::= INCLUDE:i LIBRERIA:l 
+			{:
+				i.getHijo().add(l); 
+				RESULT = i;
+			:}
+			|LIBRERIA:l
+			{:
+				Nodo padre = new Nodo("Include",id++); 
+				padre.getHijo().add(l); 
+				RESULT = padre;
+			:};
+
+LIBRERIA ::= 	r_importar libreria:l 
+				{:
+					Nodo padre = new Nodo("Libreria",id++); 
+					Nodo hijo = new Nodo(l,id++); 
+					padre.getHijo().add(hijo); 
+					RESULT = padre;
+				:};
+
+DECLARAR_VARIABLES ::= 	DECLARAR_VARIABLES:d VARIABLE1:v s_punto_coma
+						{:
+							d.getHijo().add(v);
+							RESULT = d;
+						:}
+						|VARIABLE1:v s_coma LISTA_VARIABLES2:l s_punto_coma
+						{:
+							Nodo padre = new Nodo("Declaracion de variables",id++);
+							padre.getHijo().add(v);
+							padre.getHijo().add(l);
+							RESULT = padre;
+						:}
+						|VARIABLE1:v s_punto_coma
+						{:
+							Nodo padre = new Nodo("Declaracion de variables",id++);
+							padre.getHijo().add(v);
+							RESULT = padre;	
+						:};
+
+VARIABLE1 ::= 	TIPO_VARIABLE:t identificador:v s_igual s_comilla identificador:s s_comilla 
+				{:
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo1 = new Nodo(t,id++);
+					Nodo hijo2 = new Nodo(v,id++);
+					Nodo hijo3 = new Nodo(s,id++);
+					padre.getHijo().add(hijo1);
+					padre.getHijo().add(hijo2);
+					padre.getHijo().add(hijo3);
+					RESULT = padre;
+				:}
+				|TIPO_VARIABLE:t identificador:v s_igual OPERACION_ARITMETICA:o	
+				{:
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo1 = new Nodo(t,id++);
+					Nodo hijo2 = new Nodo(v,id++);
+					padre.getHijo().add(hijo1);
+					padre.getHijo().add(hijo2);
+					padre.getHijo().add(o);
+					RESULT = padre;
+				:}
+				|TIPO_VARIABLE:t identificador:v
+				{:
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo1 = new Nodo(t,id++);
+					Nodo hijo2 = new Nodo(v,id++);
+					padre.getHijo().add(hijo1);
+					padre.getHijo().add(hijo2);
+					RESULT = padre;
+				:};
+
+LISTA_VARIABLES2 ::= 	LISTA_VARIABLES2:l VARIABLE2:v
+						{:
+							l.getHijo().add(v);
+							RESULT = l;
+						:}
+						|VARIABLE2:v
+						{:
+							Nodo padre = new Nodo("Lista de variables",id++);
+							padre.getHijo().add(v);
+							RESULT = padre;
+						:};
+
+VARIABLE2 ::=	s_coma identificador:v s_igual:s OPERACION_ARITMETICA:o
+				{:
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo1 = new Nodo(v,id++);
+					Nodo hijo2 = new Nodo(s,id++);
+					padre.getHijo().add(hijo1);
+					padre.getHijo().add(hijo2);
+					padre.getHijo().add(o);
+					RESULT = padre;
+				:}
+				|s_coma identificador:v s_igual:i s_comilla identificador:s s_comilla
+				{:
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo1 = new Nodo(v,id++);
+					Nodo hijo2 = new Nodo(i,id++);
+					Nodo hijo3 = new Nodo(s,id++);
+					padre.getHijo().add(hijo1);
+					padre.getHijo().add(hijo2);
+					padre.getHijo().add(hijo3);
+					RESULT = padre;
+				:}
+				|s_coma identificador:v
+				{:
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo = new Nodo(v,id++);
+					padre.getHijo().add(hijo);
+					RESULT = padre;
+				:};
+
+TIPO_VARIABLE ::= 	r_int:t
+					{:
+						RESULT  = t;
+					:}
+					|r_float:t
+					{:
+						RESULT = t;
+					:}
+					|r_char:t
+					{:
+						RESULT = t;
+					:}
+					|r_char_asterisco:t
+					{:
+						RESULT = t;
+					:};
+
+OPERACION_ARITMETICA ::= 	OPERACION_ARITMETICA:op1 s_suma:s OPERACION_ARITMETICA2:op2
+							{:
+								Nodo padre = new Nodo("Operacion aritmetica",id++);
+								Nodo hijo2 = new Nodo(s,id++);
+								padre.getHijo().add(op1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(op2);
+								RESULT = padre;
+							:}
+							|OPERACION_ARITMETICA:op1 s_resta:s OPERACION_ARITMETICA2:op2
+							{:
+								Nodo padre = new Nodo("Operacion aritmetica",id++);
+								Nodo hijo2 = new Nodo(s,id++);
+								padre.getHijo().add(op1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(op2);
+								RESULT = padre;
+							:}
+							|OPERACION_ARITMETICA2:o
+							{:
+								RESULT = o;
+							:};
+
+OPERACION_ARITMETICA2 ::= 	OPERACION_ARITMETICA2:op1 s_multiplicacion:s OPERACION_ARITMETICA3:op2
+							{:
+								Nodo padre = new Nodo("Operacion aritmetica",id++);
+								Nodo hijo2 = new Nodo(s, id++);
+								padre.getHijo().add(op1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(op2);
+								RESULT = padre;
+							:}
+							|OPERACION_ARITMETICA2:op1 s_division:s OPERACION_ARITMETICA3:op2
+							{:
+								Nodo padre = new Nodo("Operacion aritmetica",id++);
+								Nodo hijo2 = new Nodo(s,id++);
+								padre.getHijo().add(op1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(op2);
+								RESULT = padre;
+							:}
+							|OPERACION_ARITMETICA3:o
+							{:
+								RESULT = o;
+							:};
+
+OPERACION_ARITMETICA3 ::=	numero:s
+							{:	
+								Nodo padre = new Nodo("Entero",id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
+							:}
+							|identificador:s
+							{:
+								Nodo padre = new Nodo("Variable",id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
+							:};
+
+OPERACION_RELACIONAL ::= 	OPERACION_ARITMETICA:op1 OPERADOR_RELACIONAL:s OPERACION_ARITMETICA:op2
+							{:
+								Nodo padre = new Nodo("Operacion Relacional",id++);
+								Nodo hijo2 = new Nodo(s,id++);
+								padre.getHijo().add(op1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(op2);
+								RESULT = padre;
+							:};
+
+OPERADOR_RELACIONAL ::=		s_menor_que:s
+							{:
+								RESULT = s;
+							:}
+							|s_mayor_que:s
+							{:
+								RESULT = s;
+							:}
+							|s_menor_igual:s
+							{:
+								RESULT = s;
+							:}
+							|s_mayor_igual:s
+							{:
+								RESULT = s;
+							:}
+							|s_comparacion:s
+							{:
+								RESULT = s;
+							:}
+							|s_diferencia:s
+							{:
+								RESULT = s;
+							:}; 
+
+OPERACION_INC_DEC ::= 	identificador:i s_incremento:s
+						|identificador:i s_decremento:s
+						{:
+							Nodo padre = new Nodo("Operacion de incremento/decremento",id++);
+							Nodo hijo1 = new Nodo(i,id++);
+							Nodo hijo2 = new Nodo(s,id++);
+							padre.getHijo().add(hijo1);
+							padre.getHijo().add(hijo2);
+							RESULT  = padre;
+						:};
+
+OPERACION_ASIGNACION ::= 	identificador:op1 OPERADOR_ASIGNACION:s identificador:op2
+							{:
+								Nodo padre = new Nodo("Operacion de asignacion",id++);
+								Nodo hijo1 = new Nodo(op1,id++);
+								Nodo hijo2 = new Nodo(s,id++);
+								Nodo hijo3 = new Nodo(op2,id++);
+								padre.getHijo().add(hijo1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(hijo3);
+								RESULT = padre;
+							:};
+
+OPERADOR_ASIGNACION ::= 	s_sumar_a:s 			
+							{:
+								RESULT =  s;
+							:}
+							|s_restar_a:s
+							{:
+								RESULT = s;
+							:}
+							|s_multiplicar_a:s
+							{:
+								RESULT = s;
+							:};

@@ -14,7 +14,7 @@ import	java_cup.runtime.Symbol;
 %char                   
 %ignorecase     
 
-numero = [0-9]+
+numero = ("-")?[0-9]+("."[0-9])?
 letra = [a-zA-Z]
 comilla = "'"
 identificador = ({letra}|"_"{letra})({letra}|{numero}|"_")*
@@ -47,6 +47,7 @@ private void listar_error(String t, int y, int x){
 "while"				{return new Symbol(Tabla_simbolos.r_while, yycolumn,yyline,new String(yytext()));}
 "="					{return new Symbol(Tabla_simbolos.s_igual, yycolumn,yyline,new String(yytext()));}
 ":"					{return new Symbol(Tabla_simbolos.s_dos_puntos, yycolumn,yyline,new String(yytext()));}
+"'"					{return new Symbol(Tabla_simbolos.s_comilla, yycolumn,yyline,new String(yytext()));}
 ";"					{return new Symbol(Tabla_simbolos.s_punto_coma, yycolumn,yyline,new String(yytext()));}
 ","					{return new Symbol(Tabla_simbolos.s_coma, yycolumn,yyline,new String(yytext()));}
 "+"					{return new Symbol(Tabla_simbolos.s_suma, yycolumn,yyline,new String(yytext()));}

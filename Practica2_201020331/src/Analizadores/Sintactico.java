@@ -6,7 +6,10 @@
 package Analizadores;
 
 import Logica.Nodo;
+import java.io.File;
 import java_cup.runtime.*;
+import java.io.PrintWriter;
+import javax.swing.JOptionPane;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20150326 (SVN rev 63) generated parser.
@@ -32,8 +35,20 @@ public class Sintactico extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\005\000\002\002\004\000\002\002\003\000\002\003" +
-    "\004\000\002\003\003\000\002\004\004" });
+    "\000\053\000\002\002\004\000\002\002\003\000\002\003" +
+    "\003\000\002\003\004\000\002\004\004\000\002\004\003" +
+    "\000\002\005\004\000\002\006\005\000\002\006\006\000" +
+    "\002\006\004\000\002\007\010\000\002\007\006\000\002" +
+    "\007\004\000\002\010\004\000\002\010\003\000\002\011" +
+    "\006\000\002\011\010\000\002\011\004\000\002\020\003" +
+    "\000\002\020\003\000\002\020\003\000\002\020\003\000" +
+    "\002\012\005\000\002\012\005\000\002\012\003\000\002" +
+    "\013\005\000\002\013\005\000\002\013\003\000\002\014" +
+    "\003\000\002\014\003\000\002\015\005\000\002\021\003" +
+    "\000\002\021\003\000\002\021\003\000\002\021\003\000" +
+    "\002\021\003\000\002\021\003\000\002\016\004\000\002" +
+    "\016\004\000\002\017\005\000\002\022\003\000\002\022" +
+    "\003\000\002\022\003" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -41,11 +56,45 @@ public class Sintactico extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\010\000\004\004\005\001\002\000\006\002\000\004" +
-    "\005\001\002\000\004\051\011\001\002\000\006\002\ufffe" +
-    "\004\ufffe\001\002\000\004\002\010\001\002\000\004\002" +
-    "\001\001\002\000\006\002\ufffd\004\ufffd\001\002\000\006" +
-    "\002\uffff\004\uffff\001\002" });
+    "\000\061\000\004\004\005\001\002\000\004\002\000\001" +
+    "\002\000\004\052\063\001\002\000\016\002\ufffc\004\ufffc" +
+    "\005\ufffc\006\ufffc\012\ufffc\014\ufffc\001\002\000\016\002" +
+    "\uffff\004\005\005\016\006\015\012\012\014\017\001\002" +
+    "\000\004\002\011\001\002\000\004\002\001\001\002\000" +
+    "\004\051\uffee\001\002\000\016\002\ufffd\004\ufffd\005\ufffd" +
+    "\006\ufffd\012\ufffd\014\ufffd\001\002\000\014\002\ufffe\005" +
+    "\016\006\015\012\012\014\017\001\002\000\004\051\uffec" +
+    "\001\002\000\004\051\uffed\001\002\000\004\051\uffef\001" +
+    "\002\000\004\051\053\001\002\000\006\023\023\024\022" +
+    "\001\002\000\004\024\024\001\002\000\014\002\ufff8\005" +
+    "\ufff8\006\ufff8\012\ufff8\014\ufff8\001\002\000\004\051\031" +
+    "\001\002\000\006\023\ufff3\024\ufff3\001\002\000\006\023" +
+    "\027\024\024\001\002\000\014\002\ufff9\005\ufff9\006\ufff9" +
+    "\012\ufff9\014\ufff9\001\002\000\006\023\ufff4\024\ufff4\001" +
+    "\002\000\010\020\032\023\ufff0\024\ufff0\001\002\000\010" +
+    "\022\035\051\034\053\033\001\002\000\016\023\uffe5\024" +
+    "\uffe5\025\uffe5\026\uffe5\033\uffe5\034\uffe5\001\002\000\016" +
+    "\023\uffe4\024\uffe4\025\uffe4\026\uffe4\033\uffe4\034\uffe4\001" +
+    "\002\000\004\051\051\001\002\000\016\023\uffe6\024\uffe6" +
+    "\025\uffe6\026\uffe6\033\uffe6\034\uffe6\001\002\000\012\023" +
+    "\ufff2\024\ufff2\025\046\026\045\001\002\000\016\023\uffe9" +
+    "\024\uffe9\025\uffe9\026\uffe9\033\042\034\041\001\002\000" +
+    "\006\051\034\053\033\001\002\000\006\051\034\053\033" +
+    "\001\002\000\016\023\uffe7\024\uffe7\025\uffe7\026\uffe7\033" +
+    "\uffe7\034\uffe7\001\002\000\016\023\uffe8\024\uffe8\025\uffe8" +
+    "\026\uffe8\033\uffe8\034\uffe8\001\002\000\006\051\034\053" +
+    "\033\001\002\000\006\051\034\053\033\001\002\000\016" +
+    "\023\uffeb\024\uffeb\025\uffeb\026\uffeb\033\042\034\041\001" +
+    "\002\000\016\023\uffea\024\uffea\025\uffea\026\uffea\033\042" +
+    "\034\041\001\002\000\004\022\052\001\002\000\006\023" +
+    "\ufff1\024\ufff1\001\002\000\010\020\054\023\ufff5\024\ufff5" +
+    "\001\002\000\010\022\055\051\034\053\033\001\002\000" +
+    "\004\051\057\001\002\000\012\023\ufff6\024\ufff6\025\046" +
+    "\026\045\001\002\000\004\022\060\001\002\000\006\023" +
+    "\ufff7\024\ufff7\001\002\000\004\023\062\001\002\000\014" +
+    "\002\ufffa\005\ufffa\006\ufffa\012\ufffa\014\ufffa\001\002\000" +
+    "\016\002\ufffb\004\ufffb\005\ufffb\006\ufffb\012\ufffb\014\ufffb" +
+    "\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -53,10 +102,26 @@ public class Sintactico extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\010\000\010\002\006\003\003\004\005\001\001\000" +
-    "\004\004\011\001\001\000\002\001\001\000\002\001\001" +
+    "\000\061\000\012\002\007\003\003\004\006\005\005\001" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\012\005\012\006\013\007\020\020\017\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\006\007\060\020\017\001\001\000\002\001" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001\000\006\010\025\011\024\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\004" +
+    "\011\027\001\001\000\002\001\001\000\002\001\001\000" +
+    "\002\001\001\000\010\012\036\013\037\014\035\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001" });
+    "\002\001\001\000\002\001\001\000\002\001\001\000\004" +
+    "\014\043\001\001\000\004\014\042\001\001\000\002\001" +
+    "\001\000\002\001\001\000\006\013\047\014\035\001\001" +
+    "\000\006\013\046\014\035\001\001\000\002\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\010\012\055\013\037\014\035\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
+    "\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -97,25 +162,44 @@ public class Sintactico extends java_cup.runtime.lr_parser {
  
 
 //variables utilizadas para el analisis sintactico
-private boolean estado = true;
+private int id = 1;
 private Nodo raiz;
-
-
-public boolean getEstado(){
-	return estado;
-}
+private PrintWriter escribir;
+private File grafica;
 
 public Nodo getRaiz(){
 	return raiz;
 }
 
+public void imprimir(Nodo raiz){
+	try{
+		String path = "C:\\RECURSOS_PRACTICA\\ArbolAST.dot";
+		grafica = new File(path);
+		escribir = new PrintWriter(grafica);
+		escribir.println("digraph Arbol {\n");
+		recorrer(raiz);
+		escribir.println("}");
+		escribir.close();
+		Runtime.getRuntime().exec("CMD /C C:\\Grapvhiz\\bin\\dot -Tjpg C:\\RECURSOS_PRACTICA\\ArbolAST.dot -o C:\\RECURSOS_PRACTICA\\ArbolAST.jpg");
+	}catch(Exception e){
+        JOptionPane.showMessageDialog(null, "Error al escribir archivo dot: " + e);
+    }    
+}
+
 public void recorrer(Nodo raiz){
+	int cont = 0;
+	escribir.println(raiz.getId()+"[shape=ellipse,color=green,fontcolor=black,stile=filled,label=\""+raiz.getValor()+"\"];\n");
 	if(!raiz.getHijo().isEmpty()){
-            for(int cont = 0; cont < raiz.getHijo().size(); cont++){
-                recorrer(raiz.getHijo().get(cont));
-            }	
+		for(cont = 0; cont < raiz.getHijo().size(); cont++){
+			recorrer(raiz.getHijo().get(cont));
+		}
+		escribir.println(raiz.getId() +"->"+ raiz.getHijo().get(0).getId()+"\n"); 
+		for(cont = 1; cont < raiz.getHijo().size(); cont++){
+			escribir.println(raiz.getHijo().get(cont-1).getId() +"->"+ raiz.getHijo().get(cont).getId()+"\n"); 
+		}
 	}
-	System.out.println(raiz.getValor());
+
+
 }
 
 /**Metodo al que se llama automáticamente ante algún error sintactico.*/ 
@@ -168,19 +252,50 @@ class CUP$Sintactico$actions {
           return CUP$Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 1: // INICIO ::= INCLUDES 
+          case 1: // INICIO ::= ARCHIVO_ENTRADA 
             {
               Nodo RESULT =null;
-		int ileft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
-		int iright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
-		Nodo i = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		raiz = new Nodo("Inicio"); raiz.getHijo().add(i); recorrer(raiz);
+		imprimir(raiz);
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("INICIO",0, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 2: // INCLUDES ::= INCLUDES LIBRERIA 
+          case 2: // ARCHIVO_ENTRADA ::= INCLUDE 
+            {
+              Nodo RESULT =null;
+		int ileft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo i = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+						raiz = new Nodo("Inicio",0); 
+						raiz.getHijo().add(i);
+					
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("ARCHIVO_ENTRADA",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 3: // ARCHIVO_ENTRADA ::= INCLUDE DECLARAR_VARIABLES 
+            {
+              Nodo RESULT =null;
+		int ileft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Nodo i = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo v = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+						raiz = new Nodo("Inicio",id++); 
+						raiz.getHijo().add(i); 
+						raiz.getHijo().add(v);
+					
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("ARCHIVO_ENTRADA",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 4: // INCLUDE ::= INCLUDE LIBRERIA 
             {
               Nodo RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
@@ -189,32 +304,710 @@ class CUP$Sintactico$actions {
 		int lleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Nodo l = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		i.getHijo().add(l); RESULT = i;
-              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("INCLUDES",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+		
+				i.getHijo().add(l); 
+				RESULT = i;
+			
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("INCLUDE",2, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 3: // INCLUDES ::= LIBRERIA 
+          case 5: // INCLUDE ::= LIBRERIA 
             {
               Nodo RESULT =null;
 		int lleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Nodo l = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		Nodo padre = new Nodo("Include"); padre.getHijo().add(l); RESULT = padre;
-              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("INCLUDES",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+		
+				Nodo padre = new Nodo("Include",id++); 
+				padre.getHijo().add(l); 
+				RESULT = padre;
+			
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("INCLUDE",2, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 4: // LIBRERIA ::= r_importar libreria 
+          case 6: // LIBRERIA ::= r_importar libreria 
             {
               Nodo RESULT =null;
 		int lleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		String l = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		Nodo padre = new Nodo("Libreria"); Nodo hijo = new Nodo(l); padre.getHijo().add(hijo); RESULT = padre;
-              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("LIBRERIA",2, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+		
+					Nodo padre = new Nodo("Libreria",id++); 
+					Nodo hijo = new Nodo(l,id++); 
+					padre.getHijo().add(hijo); 
+					RESULT = padre;
+				
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("LIBRERIA",3, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 7: // DECLARAR_VARIABLES ::= DECLARAR_VARIABLES VARIABLE1 s_punto_coma 
+            {
+              Nodo RESULT =null;
+		int dleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int dright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Nodo d = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Nodo v = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		
+							d.getHijo().add(v);
+							RESULT = d;
+						
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("DECLARAR_VARIABLES",4, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 8: // DECLARAR_VARIABLES ::= VARIABLE1 s_coma LISTA_VARIABLES2 s_punto_coma 
+            {
+              Nodo RESULT =null;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).right;
+		Nodo v = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).value;
+		int lleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int lright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Nodo l = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		
+							Nodo padre = new Nodo("Declaracion de variables",id++);
+							padre.getHijo().add(v);
+							padre.getHijo().add(l);
+							RESULT = padre;
+						
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("DECLARAR_VARIABLES",4, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 9: // DECLARAR_VARIABLES ::= VARIABLE1 s_punto_coma 
+            {
+              Nodo RESULT =null;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Nodo v = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		
+							Nodo padre = new Nodo("Declaracion de variables",id++);
+							padre.getHijo().add(v);
+							RESULT = padre;	
+						
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("DECLARAR_VARIABLES",4, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 10: // VARIABLE1 ::= TIPO_VARIABLE identificador s_igual s_comilla identificador s_comilla 
+            {
+              Nodo RESULT =null;
+		int tleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-5)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-5)).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-5)).value;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).right;
+		String v = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo1 = new Nodo(t,id++);
+					Nodo hijo2 = new Nodo(v,id++);
+					Nodo hijo3 = new Nodo(s,id++);
+					padre.getHijo().add(hijo1);
+					padre.getHijo().add(hijo2);
+					padre.getHijo().add(hijo3);
+					RESULT = padre;
+				
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("VARIABLE1",5, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-5)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 11: // VARIABLE1 ::= TIPO_VARIABLE identificador s_igual OPERACION_ARITMETICA 
+            {
+              Nodo RESULT =null;
+		int tleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).value;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		String v = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int oleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int oright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo o = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo1 = new Nodo(t,id++);
+					Nodo hijo2 = new Nodo(v,id++);
+					padre.getHijo().add(hijo1);
+					padre.getHijo().add(hijo2);
+					padre.getHijo().add(o);
+					RESULT = padre;
+				
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("VARIABLE1",5, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 12: // VARIABLE1 ::= TIPO_VARIABLE identificador 
+            {
+              Nodo RESULT =null;
+		int tleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String v = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo1 = new Nodo(t,id++);
+					Nodo hijo2 = new Nodo(v,id++);
+					padre.getHijo().add(hijo1);
+					padre.getHijo().add(hijo2);
+					RESULT = padre;
+				
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("VARIABLE1",5, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 13: // LISTA_VARIABLES2 ::= LISTA_VARIABLES2 VARIABLE2 
+            {
+              Nodo RESULT =null;
+		int lleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int lright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Nodo l = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo v = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+							l.getHijo().add(v);
+							RESULT = l;
+						
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("LISTA_VARIABLES2",6, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 14: // LISTA_VARIABLES2 ::= VARIABLE2 
+            {
+              Nodo RESULT =null;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo v = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+							Nodo padre = new Nodo("Lista de variables",id++);
+							padre.getHijo().add(v);
+							RESULT = padre;
+						
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("LISTA_VARIABLES2",6, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 15: // VARIABLE2 ::= s_coma identificador s_igual OPERACION_ARITMETICA 
+            {
+              Nodo RESULT =null;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		String v = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int oleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int oright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo o = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo1 = new Nodo(v,id++);
+					Nodo hijo2 = new Nodo(s,id++);
+					padre.getHijo().add(hijo1);
+					padre.getHijo().add(hijo2);
+					padre.getHijo().add(o);
+					RESULT = padre;
+				
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("VARIABLE2",7, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 16: // VARIABLE2 ::= s_coma identificador s_igual s_comilla identificador s_comilla 
+            {
+              Nodo RESULT =null;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).right;
+		String v = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).value;
+		int ileft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).right;
+		String i = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo1 = new Nodo(v,id++);
+					Nodo hijo2 = new Nodo(i,id++);
+					Nodo hijo3 = new Nodo(s,id++);
+					padre.getHijo().add(hijo1);
+					padre.getHijo().add(hijo2);
+					padre.getHijo().add(hijo3);
+					RESULT = padre;
+				
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("VARIABLE2",7, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-5)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 17: // VARIABLE2 ::= s_coma identificador 
+            {
+              Nodo RESULT =null;
+		int vleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int vright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String v = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+					Nodo padre = new Nodo("Variable",id++);
+					Nodo hijo = new Nodo(v,id++);
+					padre.getHijo().add(hijo);
+					RESULT = padre;
+				
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("VARIABLE2",7, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 18: // TIPO_VARIABLE ::= r_int 
+            {
+              String RESULT =null;
+		int tleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+						RESULT  = t;
+					
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("TIPO_VARIABLE",14, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 19: // TIPO_VARIABLE ::= r_float 
+            {
+              String RESULT =null;
+		int tleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+						RESULT = t;
+					
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("TIPO_VARIABLE",14, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 20: // TIPO_VARIABLE ::= r_char 
+            {
+              String RESULT =null;
+		int tleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+						RESULT = t;
+					
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("TIPO_VARIABLE",14, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 21: // TIPO_VARIABLE ::= r_char_asterisco 
+            {
+              String RESULT =null;
+		int tleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String t = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+						RESULT = t;
+					
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("TIPO_VARIABLE",14, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 22: // OPERACION_ARITMETICA ::= OPERACION_ARITMETICA s_suma OPERACION_ARITMETICA2 
+            {
+              Nodo RESULT =null;
+		int op1left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int op1right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Nodo op1 = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int op2left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int op2right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo op2 = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								Nodo padre = new Nodo("Operacion aritmetica",id++);
+								Nodo hijo2 = new Nodo(s,id++);
+								padre.getHijo().add(op1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(op2);
+								RESULT = padre;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_ARITMETICA",8, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 23: // OPERACION_ARITMETICA ::= OPERACION_ARITMETICA s_resta OPERACION_ARITMETICA2 
+            {
+              Nodo RESULT =null;
+		int op1left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int op1right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Nodo op1 = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int op2left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int op2right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo op2 = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								Nodo padre = new Nodo("Operacion aritmetica",id++);
+								Nodo hijo2 = new Nodo(s,id++);
+								padre.getHijo().add(op1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(op2);
+								RESULT = padre;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_ARITMETICA",8, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 24: // OPERACION_ARITMETICA ::= OPERACION_ARITMETICA2 
+            {
+              Nodo RESULT =null;
+		int oleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int oright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo o = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								RESULT = o;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_ARITMETICA",8, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 25: // OPERACION_ARITMETICA2 ::= OPERACION_ARITMETICA2 s_multiplicacion OPERACION_ARITMETICA3 
+            {
+              Nodo RESULT =null;
+		int op1left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int op1right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Nodo op1 = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int op2left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int op2right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo op2 = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								Nodo padre = new Nodo("Operacion aritmetica",id++);
+								Nodo hijo2 = new Nodo(s, id++);
+								padre.getHijo().add(op1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(op2);
+								RESULT = padre;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_ARITMETICA2",9, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 26: // OPERACION_ARITMETICA2 ::= OPERACION_ARITMETICA2 s_division OPERACION_ARITMETICA3 
+            {
+              Nodo RESULT =null;
+		int op1left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int op1right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Nodo op1 = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int op2left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int op2right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo op2 = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								Nodo padre = new Nodo("Operacion aritmetica",id++);
+								Nodo hijo2 = new Nodo(s,id++);
+								padre.getHijo().add(op1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(op2);
+								RESULT = padre;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_ARITMETICA2",9, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 27: // OPERACION_ARITMETICA2 ::= OPERACION_ARITMETICA3 
+            {
+              Nodo RESULT =null;
+		int oleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int oright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo o = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								RESULT = o;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_ARITMETICA2",9, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 28: // OPERACION_ARITMETICA3 ::= numero 
+            {
+              Nodo RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+			
+								Nodo padre = new Nodo("Entero",id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_ARITMETICA3",10, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 29: // OPERACION_ARITMETICA3 ::= identificador 
+            {
+              Nodo RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								Nodo padre = new Nodo("Variable",id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_ARITMETICA3",10, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 30: // OPERACION_RELACIONAL ::= OPERACION_ARITMETICA OPERADOR_RELACIONAL OPERACION_ARITMETICA 
+            {
+              Nodo RESULT =null;
+		int op1left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int op1right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Nodo op1 = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int op2left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int op2right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Nodo op2 = (Nodo)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								Nodo padre = new Nodo("Operacion Relacional",id++);
+								Nodo hijo2 = new Nodo(s,id++);
+								padre.getHijo().add(op1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(op2);
+								RESULT = padre;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_RELACIONAL",11, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 31: // OPERADOR_RELACIONAL ::= s_menor_que 
+            {
+              String RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								RESULT = s;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERADOR_RELACIONAL",15, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 32: // OPERADOR_RELACIONAL ::= s_mayor_que 
+            {
+              String RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								RESULT = s;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERADOR_RELACIONAL",15, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 33: // OPERADOR_RELACIONAL ::= s_menor_igual 
+            {
+              String RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								RESULT = s;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERADOR_RELACIONAL",15, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 34: // OPERADOR_RELACIONAL ::= s_mayor_igual 
+            {
+              String RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								RESULT = s;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERADOR_RELACIONAL",15, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 35: // OPERADOR_RELACIONAL ::= s_comparacion 
+            {
+              String RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								RESULT = s;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERADOR_RELACIONAL",15, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 36: // OPERADOR_RELACIONAL ::= s_diferencia 
+            {
+              String RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								RESULT = s;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERADOR_RELACIONAL",15, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 37: // OPERACION_INC_DEC ::= identificador s_incremento 
+            {
+              Nodo RESULT =null;
+		int ileft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String i = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_INC_DEC",12, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 38: // OPERACION_INC_DEC ::= identificador s_decremento 
+            {
+              Nodo RESULT =null;
+		int ileft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String i = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+							Nodo padre = new Nodo("Operacion de incremento/decremento",id++);
+							Nodo hijo1 = new Nodo(i,id++);
+							Nodo hijo2 = new Nodo(s,id++);
+							padre.getHijo().add(hijo1);
+							padre.getHijo().add(hijo2);
+							RESULT  = padre;
+						
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_INC_DEC",12, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 39: // OPERACION_ASIGNACION ::= identificador OPERADOR_ASIGNACION identificador 
+            {
+              Nodo RESULT =null;
+		int op1left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int op1right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		String op1 = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int op2left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int op2right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String op2 = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								Nodo padre = new Nodo("Operacion de asignacion",id++);
+								Nodo hijo1 = new Nodo(op1,id++);
+								Nodo hijo2 = new Nodo(s,id++);
+								Nodo hijo3 = new Nodo(op2,id++);
+								padre.getHijo().add(hijo1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(hijo3);
+								RESULT = padre;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERACION_ASIGNACION",13, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 40: // OPERADOR_ASIGNACION ::= s_sumar_a 
+            {
+              String RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								RESULT =  s;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERADOR_ASIGNACION",16, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 41: // OPERADOR_ASIGNACION ::= s_restar_a 
+            {
+              String RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								RESULT = s;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERADOR_ASIGNACION",16, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 42: // OPERADOR_ASIGNACION ::= s_multiplicar_a 
+            {
+              String RESULT =null;
+		int sleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int sright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		String s = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		
+								RESULT = s;
+							
+              CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("OPERADOR_ASIGNACION",16, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
 

@@ -7,12 +7,15 @@ import java.util.ArrayList;
  * @author Cristian
  */
 public class Nodo {
+    
     private String valor;
     private ArrayList<Nodo> hijo;
+    private int id;
     
-    public Nodo(String v){
+    public Nodo(String v, int id){
         this.valor = v;
         this.hijo = new ArrayList<Nodo>();
+        this.id = id;
     }
 
     public String getValor() {
@@ -30,5 +33,13 @@ public class Nodo {
     public void setHijo(ArrayList<Nodo> hijo) {
         this.hijo = hijo;
     }
-       
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+     
 }

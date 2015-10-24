@@ -71,7 +71,7 @@ OPERACION_ARITMETICA, OPERACION_ARITMETICA2, OPERACION_ARITMETICA3, TIPO_VARIABL
 
 start with INICIO;  
 
-INICIO ::= ARCHIVO_ENTRADA{:imprimir(raiz);:};
+INICIO ::= 	ARCHIVO_ENTRADA{:imprimir(raiz);:};
 
 ARCHIVO_ENTRADA ::= INCLUDE:i 
 					{:
@@ -117,7 +117,8 @@ INCLUDE ::= INCLUDE:i LIBRERIA:l
 				Nodo padre = new Nodo("Include",id++); 
 				padre.getHijo().add(l); 
 				RESULT = padre;
-			:};
+			:}
+			|error;
 
 LIBRERIA ::= 	r_importar libreria:l 
 				{:
@@ -188,7 +189,8 @@ LISTA_VARIABLES2 ::= 	LISTA_VARIABLES2:l s_coma VARIABLE2:v
 							Nodo padre = new Nodo("Lista de variables",id++);
 							padre.getHijo().add(v);
 							RESULT = padre;
-						:};
+						:}
+						|error;
 
 VARIABLE2 ::=	identificador:v s_igual:s OPERACION_ARITMETICA:o
 				{:
@@ -291,6 +293,15 @@ OPERACION_ARITMETICA2 ::= 	OPERACION_ARITMETICA2:op1 s_multiplicacion:s OPERACIO
 								padre.getHijo().add(op2);
 								RESULT = padre;
 							:}
+							|OPERACION_ARITMETICA2:op1 s_porcentaje:s OPERACION_ARITMETICA3:op2
+							{:
+								Nodo padre = new Nodo("Operacion aritmetica",id++);
+								Nodo hijo2 = new Nodo(s,id++);
+								padre.getHijo().add(op1);
+								padre.getHijo().add(hijo2);
+								padre.getHijo().add(op2);
+								RESULT = padre;
+							:}
 							|OPERACION_ARITMETICA3:o
 							{:
 								RESULT = o;
@@ -318,7 +329,8 @@ OPERACION_RELACIONAL ::= 	OPERACION_ARITMETICA:op1 OPERADOR_RELACIONAL:s OPERACI
 								padre.getHijo().add(s);
 								padre.getHijo().add(op2);
 								RESULT = padre;
-							:};
+							:}
+							|error;
 
 OPERADOR_RELACIONAL ::=		s_menor_que:s
 							{:
@@ -437,7 +449,8 @@ DECLARAR_METODOS ::= DECLARAR_METODOS:l METODO:m
 							Nodo padre = new Nodo("DECLARACION DE METODOS",id++);
 							padre.getHijo().add(m);
 							RESULT = m;
-						:};
+						:}
+						|error;
 
 METODO ::= TIPO_VARIABLE:t identificador:i s_parentesis_abrir LISTA_PARAMETROS:p s_parentesis_cerrar
 			s_llave_abrir BLOQUE_INSTRUCCIONES:b r_return OPERACION_ARITMETICA:a s_punto_coma s_llave_cerrar
@@ -484,7 +497,8 @@ LISTA_PARAMETROS ::= 	LISTA_PARAMETROS:l s_coma PARAMETRO:p
 							Nodo padre = new Nodo("LISTA DE PARAMETROS",id++);
 							padre.getHijo().add(p);
 							RESULT = padre;
-						:};
+						:}
+						|error;
 
 PARAMETRO ::= 	TIPO_VARIABLE:t identificador:i
 				{:	
@@ -591,7 +605,8 @@ LISTA_CASOS ::= LISTA_CASOS:l CASO_DEFAULT:c
 					Nodo padre = new Nodo("LISTA CASOS",id++);
 					padre.getHijo().add(c);
 					RESULT= padre;
-				:}; 	
+				:}
+				|error; 	
 
 CASO ::= 	r_case numero:v s_dos_puntos BLOQUE_INSTRUCCIONES:b
 			{:
@@ -657,7 +672,8 @@ LISTA_PARAMETROS2 ::=	LISTA_PARAMETROS2:l PARAMETROS2:p
 							Nodo padre = new Nodo("LISTA_PARAMETROS",id++);
 							padre.getHijo().add(p);
 							RESULT = p;
-						:};
+						:}
+						|error;
 
 PARAMETROS2 ::= 	identificador:i s_parentesis_abrir LISTA_PARAMETROS2:p s_parentesis_cerrar
 					{:
@@ -727,4 +743,5 @@ LISTA_INSTRUCCIONES ::= INSTRUCCION_DO_WHILE:l
 						|LLAMAR_FUNCION:l
 						{:
 							RESULT = l;
-						:};
+						:}
+						|error;

@@ -19,6 +19,8 @@ letra = [a-zA-Z]
 comilla = "'"
 identificador = ({letra}|"_"{letra})({letra}|{numero}|"_")*
 libreria = {comilla}{identificador}".h"{comilla}
+comentario1 = "/*"[^'*']*"*/"
+comentario2 = [/][/] [^\n]* [\n]
 
 %{
 //codigo que se utilizara en el analizador lexico
@@ -80,8 +82,9 @@ private void listar_error(String t, int y, int x){
 
 
 
-
-[ \t\r\f\n]+ 	{ /* Se ignoran */}  
+{comentario1}	{/*Se ignoran*/}
+{comentario2}	{/*Se ignoran*/}
+[ \t\r\f\n]+ 	{/*Se ignoran*/}  
 
 /* CUAQUIER OTRO */ 
 .         		{/*listar_error(new String(yytext()),yyline,yycolumn);

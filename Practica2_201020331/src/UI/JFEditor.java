@@ -8,23 +8,92 @@ package UI;
 import Analizadores.Lexico;
 import Analizadores.Sintactico;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author Cristian
  */
 public class JFEditor extends javax.swing.JFrame {
-
+    
+    private JFileChooser manejo_archivos;
+    private File archivo;
     /**
      * Creates new form JFEditor
      */
     public JFEditor() {
         initComponents();
     }
+    
+    public void manejar_archivo(){
+        manejo_archivos = new JFileChooser();
+        int resultado = 0;
+        String[] extensiones = new String[]{"h","c"};
+        FileNameExtensionFilter extension = new FileNameExtensionFilter("*.h, *.c ", extensiones);
+        manejo_archivos.setDialogTitle("Abrir Archivo");
+        manejo_archivos.setDialogType(JFileChooser.OPEN_DIALOG);
+        manejo_archivos.setFileFilter(extension);
+        resultado = manejo_archivos.showOpenDialog(null);
+        if(resultado == manejo_archivos.CANCEL_OPTION){
+            archivo = null;
+        }else if(resultado == manejo_archivos.APPROVE_OPTION){
+            archivo = manejo_archivos.getSelectedFile().getAbsoluteFile();
+        }      
+    }
+    
+    public void guardar_como(){
+        try{
+            String aux = jTAEntrada.getText();
+            manejo_archivos = new JFileChooser();
+            String[] extensiones = new String[]{"h","c"};
+            FileNameExtensionFilter extension = new FileNameExtensionFilter("*.h, *.c ", extensiones);
+            manejo_archivos.setDialogTitle("Guardar Como");
+            manejo_archivos.setDialogType(JFileChooser.SAVE_DIALOG);
+            manejo_archivos.setFileFilter(extension);
+            int resultado = manejo_archivos.showSaveDialog(null);
+            if(resultado == manejo_archivos.APPROVE_OPTION){
+                archivo = manejo_archivos.getSelectedFile();
+                FileWriter  escribir = new FileWriter(archivo);
+                BufferedWriter escribir2 = new BufferedWriter(escribir);
+                String[] lineas = aux.split("\n");
+                    int tam = lineas.length;
+                    for (int i = 0; i < tam; i++) {
+                        escribir2.write(lineas[i] + "\n");
+                    }
+                    escribir2.close();
+            }
+        }catch(Exception e){
+             JOptionPane.showMessageDialog(null, "A ocurrido un error guardar el documento: "
+                        + e);
+        }
+    }//fin del metodo guardar archivo
+    
+    public void guardar_archivo(){
+        try{
+            String aux = jTAEntrada.getText();
+            archivo = manejo_archivos.getSelectedFile();
+            FileWriter  escribir = new FileWriter(archivo);
+            BufferedWriter escribir2 = new BufferedWriter(escribir);
+            String[] lineas = aux.split("\n");
+            int tam = lineas.length;
+                for (int i = 0; i < tam; i++) {
+                    escribir2.write(lineas[i] + "\n");
+                }
+            escribir2.close();
+        }catch(Exception e){
+             JOptionPane.showMessageDialog(null, "A ocurrido un error guardar el documento: "
+                        + e);
+        }
+    }//fin del metodo guardar archivo
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -38,10 +107,17 @@ public class JFEditor extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTAEntrada = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jMArchivo = new javax.swing.JMenu();
+        jMIAbrir = new javax.swing.JMenuItem();
+        jMINuevo = new javax.swing.JMenuItem();
+        jMIGuardar = new javax.swing.JMenuItem();
+        jMIGuardar_como = new javax.swing.JMenuItem();
+        jMISalir = new javax.swing.JMenuItem();
         jMEjecutar = new javax.swing.JMenu();
         jMICompilar = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        jMAcerca_de = new javax.swing.JMenu();
+        jMIManual_usuario = new javax.swing.JMenuItem();
+        jMIManual_tecnico = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,8 +125,49 @@ public class JFEditor extends javax.swing.JFrame {
         jTAEntrada.setRows(5);
         jScrollPane1.setViewportView(jTAEntrada);
 
-        jMenu1.setText("Archivo");
-        jMenuBar1.add(jMenu1);
+        jMArchivo.setText("Archivo");
+
+        jMIAbrir.setText("Abrir");
+        jMIAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIAbrirActionPerformed(evt);
+            }
+        });
+        jMArchivo.add(jMIAbrir);
+
+        jMINuevo.setText("Nuevo");
+        jMINuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMINuevoActionPerformed(evt);
+            }
+        });
+        jMArchivo.add(jMINuevo);
+
+        jMIGuardar.setText("Guardar");
+        jMIGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIGuardarActionPerformed(evt);
+            }
+        });
+        jMArchivo.add(jMIGuardar);
+
+        jMIGuardar_como.setText("Guardar Como");
+        jMIGuardar_como.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIGuardar_comoActionPerformed(evt);
+            }
+        });
+        jMArchivo.add(jMIGuardar_como);
+
+        jMISalir.setText("Salir");
+        jMISalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMISalirActionPerformed(evt);
+            }
+        });
+        jMArchivo.add(jMISalir);
+
+        jMenuBar1.add(jMArchivo);
 
         jMEjecutar.setText("Ejecutar");
 
@@ -64,8 +181,25 @@ public class JFEditor extends javax.swing.JFrame {
 
         jMenuBar1.add(jMEjecutar);
 
-        jMenu3.setText("Acerca de");
-        jMenuBar1.add(jMenu3);
+        jMAcerca_de.setText("Acerca de");
+
+        jMIManual_usuario.setText("Manual de Usuario");
+        jMIManual_usuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIManual_usuarioActionPerformed(evt);
+            }
+        });
+        jMAcerca_de.add(jMIManual_usuario);
+
+        jMIManual_tecnico.setText("Manual Tecnico");
+        jMIManual_tecnico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIManual_tecnicoActionPerformed(evt);
+            }
+        });
+        jMAcerca_de.add(jMIManual_tecnico);
+
+        jMenuBar1.add(jMAcerca_de);
 
         setJMenuBar(jMenuBar1);
 
@@ -98,12 +232,76 @@ public class JFEditor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMICompilarActionPerformed
 
+    private void jMIGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIGuardarActionPerformed
+        if(archivo != null){
+            this.guardar_archivo();
+        }else{
+            this.guardar_como();
+        }
+    }//GEN-LAST:event_jMIGuardarActionPerformed
+
+    private void jMIGuardar_comoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIGuardar_comoActionPerformed
+        this.guardar_como();
+    }//GEN-LAST:event_jMIGuardar_comoActionPerformed
+
+    private void jMISalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMISalirActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jMISalirActionPerformed
+
+    private void jMIAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIAbrirActionPerformed
+         manejar_archivo();
+        if(archivo.exists() && archivo != null){ //verificamos que el archivo abierto existe
+            try{
+                BufferedReader leer = new BufferedReader(new FileReader(archivo));
+                StringBuffer leer_cadena = new StringBuffer();
+                String cadena_entrada = null;
+                jTAEntrada.setText("");
+                while((cadena_entrada = leer.readLine()) != null ){
+                    leer_cadena.append(cadena_entrada + "\n");
+                }
+                jTAEntrada.setText(leer_cadena.toString());
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, "error al cargar archivo");
+            }
+        }else{ //de lo contrario desplegamos un dialogo adviertiendo
+            JOptionPane.showMessageDialog(null, "archivo no existe");
+        }
+    }//GEN-LAST:event_jMIAbrirActionPerformed
+
+    private void jMINuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMINuevoActionPerformed
+        archivo = null;
+        jTAEntrada.setText("");
+    }//GEN-LAST:event_jMINuevoActionPerformed
+
+    private void jMIManual_usuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIManual_usuarioActionPerformed
+        try{
+            Runtime.getRuntime().exec("CMD /C start C:\\RECURSOS_PRACTICA\\MANUAL_USUARIO.pdf");
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Error al abrir el documento: " + ex);
+        }
+    }//GEN-LAST:event_jMIManual_usuarioActionPerformed
+
+    private void jMIManual_tecnicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIManual_tecnicoActionPerformed
+        try{
+            Runtime.getRuntime().exec("CMD /C start C:\\RECURSOS_PRACTICA\\MANUAL_TECNICO.pdf");
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Error al abrir el documento: " + ex);
+        }
+    }//GEN-LAST:event_jMIManual_tecnicoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMAcerca_de;
+    private javax.swing.JMenu jMArchivo;
     private javax.swing.JMenu jMEjecutar;
+    private javax.swing.JMenuItem jMIAbrir;
     private javax.swing.JMenuItem jMICompilar;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuItem jMIGuardar;
+    private javax.swing.JMenuItem jMIGuardar_como;
+    private javax.swing.JMenuItem jMIManual_tecnico;
+    private javax.swing.JMenuItem jMIManual_usuario;
+    private javax.swing.JMenuItem jMINuevo;
+    private javax.swing.JMenuItem jMISalir;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTAEntrada;

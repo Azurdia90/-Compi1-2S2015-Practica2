@@ -28,7 +28,8 @@ public void imprimir(Nodo raiz){
 		recorrer(raiz);
 		escribir.println("}");
 		escribir.close();
-		Runtime.getRuntime().exec("CMD /C C:\\Grapvhiz\\bin\\dot -Tjpg C:\\RECURSOS_PRACTICA\\ArbolAST.dot -o C:\\RECURSOS_PRACTICA\\ArbolAST.jpg");
+		Runtime.getRuntime().exec("CMD /C %GRAFICAR% -Tjpg C:\\RECURSOS_PRACTICA\\ArbolAST.dot -o C:\\RECURSOS_PRACTICA\\ArbolAST.jpg");
+		Runtime.getRuntime().exec("CMD /C start C:\\RECURSOS_PRACTICA\\ArbolAST.jpg");
 	}catch(Exception e){
         JOptionPane.showMessageDialog(null, "Error al escribir archivo dot: " + e);
     }    
@@ -41,9 +42,8 @@ public void recorrer(Nodo raiz){
 		for(cont = 0; cont < raiz.getHijo().size(); cont++){
 			recorrer(raiz.getHijo().get(cont));
 		}
-		escribir.println(raiz.getId() +"->"+ raiz.getHijo().get(0).getId()+"\n"); 
-		for(cont = 1; cont < raiz.getHijo().size(); cont++){
-			escribir.println(raiz.getHijo().get(cont-1).getId() +"->"+ raiz.getHijo().get(cont).getId()+"\n"); 
+		for(cont = 0; cont < raiz.getHijo().size(); cont++){
+			escribir.println(raiz.getId() +"->"+ raiz.getHijo().get(cont).getId()+"\n"); 
 		}
 	}
 
@@ -61,15 +61,13 @@ public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
 } 
 :} 
 
-terminal String r_importar, r_char, r_char_asterisco, r_do, r_else, r_for, r_float, r_if, r_int, r_main, r_switch, r_while, s_igual, 
+terminal String r_importar, r_case, r_char, r_char_asterisco, r_break, r_default, r_do, r_else, r_for, r_float, r_if, r_int, r_main, r_switch, r_while, s_igual, 
 s_dos_puntos, s_comilla, s_punto_coma, s_coma, s_suma, s_resta, s_mayor_igual, s_menor_igual, s_comparacion, s_diferencia, s_division, 
 s_multiplicacion, s_porcentaje, s_mayor_que, s_menor_que, s_incremento, s_decremento, s_sumar_a, s_restar_a, s_multiplicar_a, 
-s_llave_abrir, s_llave_cerrar, s_parentesis_abrir, s_parentesis_cerrar, identificador, libreria, numero;
+s_llave_abrir, s_llave_cerrar, s_parentesis_abrir, s_parentesis_cerrar, r_return, identificador, libreria, numero;
 
 non terminal Nodo INICIO, ARCHIVO_ENTRADA, INCLUDE, LIBRERIA, DECLARAR_VARIABLES, VARIABLE1, LISTA_VARIABLES2, VARIABLE2, 
-OPERACION_ARITMETICA, OPERACION_ARITMETICA2, OPERACION_ARITMETICA3, OPERACION_RELACIONAL, OPERACION_INC_DEC, OPERACION_ASIGNACION;
-
-non terminal String TIPO_VARIABLE, OPERADOR_RELACIONAL, OPERADOR_ASIGNACION;
+OPERACION_ARITMETICA, OPERACION_ARITMETICA2, OPERACION_ARITMETICA3, TIPO_VARIABLE, OPERACION_RELACIONAL, OPERADOR_RELACIONAL, OPERACION_INC_DEC, OPERACION_ASIGNACION, OPERADOR_ASIGNACION, METODO_MAIN, DECLARAR_METODOS, METODO, LISTA_PARAMETROS, PARAMETRO, INSTRUCCION_DO_WHILE, INSTRUCCION_WHILE, INSTRUCCION_FOR, INSTRUCCION_IF, INSTRUCCION_IF_ELSE, INSTRUCCION_SWITCH, LISTA_CASOS, CASO, CASO_DEFAULT,LLAMAR_FUNCION,LISTA_PARAMETROS2, PARAMETROS2, BLOQUE_INSTRUCCIONES, LISTA_INSTRUCCIONES;
 
 start with INICIO;  
 
@@ -82,9 +80,31 @@ ARCHIVO_ENTRADA ::= INCLUDE:i
 					:}
 					|INCLUDE:i DECLARAR_VARIABLES:v 
 					{:
-						raiz = new Nodo("Inicio",id++); 
+						raiz = new Nodo("Inicio",0); 
 						raiz.getHijo().add(i); 
 						raiz.getHijo().add(v);
+					:}
+					|INCLUDE:i DECLARAR_METODOS:m METODO_MAIN:s
+					{:
+						raiz = new Nodo("Inicio",0);
+						raiz.getHijo().add(i);
+						raiz.getHijo().add(m);
+						raiz.getHijo().add(s); 
+					:}
+					|INCLUDE:i DECLARAR_VARIABLES:v DECLARAR_METODOS:m METODO_MAIN:s
+					{:
+						raiz = new Nodo("Inicio",0);
+						raiz.getHijo().add(i);
+						raiz.getHijo().add(v);
+						raiz.getHijo().add(m);
+						raiz.getHijo().add(s);
+					:}
+					|INCLUDE:i DECLARAR_VARIABLES:v METODO_MAIN:s
+					{:
+						raiz = new Nodo("Inicio",0);
+						raiz.getHijo().add(i);
+						raiz.getHijo().add(v);
+						raiz.getHijo().add(s);
 					:};
 
 INCLUDE ::= INCLUDE:i LIBRERIA:l 
@@ -126,38 +146,39 @@ DECLARAR_VARIABLES ::= 	DECLARAR_VARIABLES:d VARIABLE1:v s_punto_coma
 							RESULT = padre;	
 						:};
 
-VARIABLE1 ::= 	TIPO_VARIABLE:t identificador:v s_igual s_comilla identificador:s s_comilla 
+VARIABLE1 ::= 	TIPO_VARIABLE:t identificador:v s_igual:s s_comilla identificador:c s_comilla 
 				{:
 					Nodo padre = new Nodo("Variable",id++);
-					Nodo hijo1 = new Nodo(t,id++);
 					Nodo hijo2 = new Nodo(v,id++);
 					Nodo hijo3 = new Nodo(s,id++);
-					padre.getHijo().add(hijo1);
+					Nodo hijo4 = new Nodo(c,id++);
+					padre.getHijo().add(t);
 					padre.getHijo().add(hijo2);
 					padre.getHijo().add(hijo3);
+					padre.getHijo().add(hijo4);
 					RESULT = padre;
 				:}
-				|TIPO_VARIABLE:t identificador:v s_igual OPERACION_ARITMETICA:o	
+				|TIPO_VARIABLE:t identificador:v s_igual:s OPERACION_ARITMETICA:o	
 				{:
 					Nodo padre = new Nodo("Variable",id++);
-					Nodo hijo1 = new Nodo(t,id++);
 					Nodo hijo2 = new Nodo(v,id++);
-					padre.getHijo().add(hijo1);
+					Nodo hijo3 = new Nodo(s,id++);
+					padre.getHijo().add(t);
 					padre.getHijo().add(hijo2);
+					padre.getHijo().add(hijo3);
 					padre.getHijo().add(o);
 					RESULT = padre;
 				:}
 				|TIPO_VARIABLE:t identificador:v
 				{:
 					Nodo padre = new Nodo("Variable",id++);
-					Nodo hijo1 = new Nodo(t,id++);
 					Nodo hijo2 = new Nodo(v,id++);
-					padre.getHijo().add(hijo1);
+					padre.getHijo().add(t);
 					padre.getHijo().add(hijo2);
 					RESULT = padre;
 				:};
 
-LISTA_VARIABLES2 ::= 	LISTA_VARIABLES2:l VARIABLE2:v
+LISTA_VARIABLES2 ::= 	LISTA_VARIABLES2:l s_coma VARIABLE2:v
 						{:
 							l.getHijo().add(v);
 							RESULT = l;
@@ -169,7 +190,7 @@ LISTA_VARIABLES2 ::= 	LISTA_VARIABLES2:l VARIABLE2:v
 							RESULT = padre;
 						:};
 
-VARIABLE2 ::=	s_coma identificador:v s_igual:s OPERACION_ARITMETICA:o
+VARIABLE2 ::=	identificador:v s_igual:s OPERACION_ARITMETICA:o
 				{:
 					Nodo padre = new Nodo("Variable",id++);
 					Nodo hijo1 = new Nodo(v,id++);
@@ -179,18 +200,20 @@ VARIABLE2 ::=	s_coma identificador:v s_igual:s OPERACION_ARITMETICA:o
 					padre.getHijo().add(o);
 					RESULT = padre;
 				:}
-				|s_coma identificador:v s_igual:i s_comilla identificador:s s_comilla
+				|identificador:v s_igual:i s_comilla identificador:s s_comilla
 				{:
 					Nodo padre = new Nodo("Variable",id++);
+					Nodo padre2 = new Nodo("Identificador", id++);
 					Nodo hijo1 = new Nodo(v,id++);
 					Nodo hijo2 = new Nodo(i,id++);
 					Nodo hijo3 = new Nodo(s,id++);
-					padre.getHijo().add(hijo1);
+					padre2.getHijo().add(hijo1);
+					padre.getHijo().add(padre2);
 					padre.getHijo().add(hijo2);
 					padre.getHijo().add(hijo3);
 					RESULT = padre;
 				:}
-				|s_coma identificador:v
+				|identificador:v
 				{:
 					Nodo padre = new Nodo("Variable",id++);
 					Nodo hijo = new Nodo(v,id++);
@@ -200,19 +223,31 @@ VARIABLE2 ::=	s_coma identificador:v s_igual:s OPERACION_ARITMETICA:o
 
 TIPO_VARIABLE ::= 	r_int:t
 					{:
-						RESULT  = t;
+						Nodo padre = new Nodo("Tipo Variable",id++);
+						Nodo hijo = new Nodo(t,id++);
+						padre.getHijo().add(hijo);
+						RESULT = padre;
 					:}
 					|r_float:t
 					{:
-						RESULT = t;
+						Nodo padre = new Nodo("Tipo Variable",id++);
+						Nodo hijo = new Nodo(t,id++);
+						padre.getHijo().add(hijo);
+						RESULT = padre;
 					:}
 					|r_char:t
 					{:
-						RESULT = t;
+						Nodo padre = new Nodo("Tipo Variable",id++);
+						Nodo hijo = new Nodo(t,id++);
+						padre.getHijo().add(hijo);
+						RESULT = padre;
 					:}
 					|r_char_asterisco:t
 					{:
-						RESULT = t;
+						Nodo padre = new Nodo("Tipo Variable",id++);
+						Nodo hijo = new Nodo(t,id++);
+						padre.getHijo().add(hijo);
+						RESULT = padre;
 					:};
 
 OPERACION_ARITMETICA ::= 	OPERACION_ARITMETICA:op1 s_suma:s OPERACION_ARITMETICA2:op2
@@ -279,39 +314,64 @@ OPERACION_ARITMETICA3 ::=	numero:s
 OPERACION_RELACIONAL ::= 	OPERACION_ARITMETICA:op1 OPERADOR_RELACIONAL:s OPERACION_ARITMETICA:op2
 							{:
 								Nodo padre = new Nodo("Operacion Relacional",id++);
-								Nodo hijo2 = new Nodo(s,id++);
 								padre.getHijo().add(op1);
-								padre.getHijo().add(hijo2);
+								padre.getHijo().add(s);
 								padre.getHijo().add(op2);
 								RESULT = padre;
 							:};
 
 OPERADOR_RELACIONAL ::=		s_menor_que:s
 							{:
-								RESULT = s;
+								Nodo padre = new Nodo("Operador", id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
 							:}
 							|s_mayor_que:s
 							{:
-								RESULT = s;
+								Nodo padre = new Nodo("Operador", id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
 							:}
 							|s_menor_igual:s
 							{:
-								RESULT = s;
+								Nodo padre = new Nodo("Operador", id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
 							:}
 							|s_mayor_igual:s
 							{:
-								RESULT = s;
+								Nodo padre = new Nodo("Operador", id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
 							:}
 							|s_comparacion:s
 							{:
-								RESULT = s;
+								Nodo padre = new Nodo("Operador", id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
 							:}
 							|s_diferencia:s
 							{:
-								RESULT = s;
+								Nodo padre = new Nodo("Operador", id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
 							:}; 
 
 OPERACION_INC_DEC ::= 	identificador:i s_incremento:s
+						{:
+							Nodo padre = new Nodo("Operacion de incremento/decremento",id++);
+							Nodo hijo1 = new Nodo(i,id++);
+							Nodo hijo2 = new Nodo(s,id++);
+							padre.getHijo().add(hijo1);
+							padre.getHijo().add(hijo2);
+							RESULT  = padre;
+						:}
 						|identificador:i s_decremento:s
 						{:
 							Nodo padre = new Nodo("Operacion de incremento/decremento",id++);
@@ -325,24 +385,346 @@ OPERACION_INC_DEC ::= 	identificador:i s_incremento:s
 OPERACION_ASIGNACION ::= 	identificador:op1 OPERADOR_ASIGNACION:s identificador:op2
 							{:
 								Nodo padre = new Nodo("Operacion de asignacion",id++);
+								Nodo padre1 = new Nodo ("Variable",id++);
+								Nodo padre2 = new Nodo ("Varialbe",id++);
 								Nodo hijo1 = new Nodo(op1,id++);
-								Nodo hijo2 = new Nodo(s,id++);
-								Nodo hijo3 = new Nodo(op2,id++);
-								padre.getHijo().add(hijo1);
-								padre.getHijo().add(hijo2);
-								padre.getHijo().add(hijo3);
+								Nodo hijo2 = new Nodo(op2,id++);
+								padre1.getHijo().add(hijo1);
+								padre2.getHijo().add(hijo2);
+								padre.getHijo().add(padre1);
+								padre.getHijo().add(s);
+								padre.getHijo().add(padre2);
 								RESULT = padre;
 							:};
 
 OPERADOR_ASIGNACION ::= 	s_sumar_a:s 			
 							{:
-								RESULT =  s;
+								Nodo padre = new Nodo("Operador", id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
 							:}
 							|s_restar_a:s
 							{:
-								RESULT = s;
+								Nodo padre = new Nodo("Operador", id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
 							:}
 							|s_multiplicar_a:s
 							{:
-								RESULT = s;
+								Nodo padre = new Nodo("Operador", id++);
+								Nodo hijo = new Nodo(s,id++);
+								padre.getHijo().add(hijo);
+								RESULT = padre;
 							:};
+
+METODO_MAIN ::= r_int r_main s_parentesis_abrir s_parentesis_cerrar 
+				s_llave_abrir BLOQUE_INSTRUCCIONES:b r_return numero s_punto_coma s_llave_cerrar
+				{:
+					Nodo padre = new Nodo("METODO MAIN",id++);
+					padre.getHijo().add(b);
+					RESULT = padre;
+				:};
+
+DECLARAR_METODOS ::= DECLARAR_METODOS:l METODO:m
+						{:
+							l.getHijo().add(m);
+							RESULT = l;
+						:}
+						|METODO:m
+						{:
+							Nodo padre = new Nodo("DECLARACION DE METODOS",id++);
+							padre.getHijo().add(m);
+							RESULT = m;
+						:};
+
+METODO ::= TIPO_VARIABLE:t identificador:i s_parentesis_abrir LISTA_PARAMETROS:p s_parentesis_cerrar
+			s_llave_abrir BLOQUE_INSTRUCCIONES:b r_return OPERACION_ARITMETICA:a s_punto_coma s_llave_cerrar
+			{:
+				Nodo padre = new Nodo("METODO",id++);
+				Nodo padre1 = new Nodo("TIPO DE RETORNO",id++);
+				padre1.getHijo().add(t);
+				Nodo padre2 = new Nodo("Variable",id++);
+				Nodo hijo2 = new Nodo(i,id++);
+				padre2.getHijo().add(hijo2);
+				Nodo padre3 = new Nodo("Valor retorno",id++);
+				padre3.getHijo().add(a);
+				padre.getHijo().add(padre1);
+				padre.getHijo().add(padre2);
+				padre.getHijo().add(p);
+				padre.getHijo().add(b);
+				padre.getHijo().add(padre3);
+				RESULT = padre;
+			:}
+			|TIPO_VARIABLE:t identificador:i s_parentesis_abrir s_parentesis_cerrar
+			s_llave_abrir BLOQUE_INSTRUCCIONES:b r_return OPERACION_ARITMETICA:a s_punto_coma s_llave_cerrar
+			{:
+				Nodo padre = new Nodo("METODO",id++);
+				Nodo padre1 = new Nodo("TIPO DE RETORNO",id++);
+				padre1.getHijo().add(t);
+				Nodo padre2 = new Nodo("Variable",id++);
+				Nodo hijo2 = new Nodo(i,id++);
+				padre2.getHijo().add(hijo2);
+				Nodo padre3 = new Nodo("Valor retorno",id++);
+				padre3.getHijo().add(a);
+				padre.getHijo().add(padre1);
+				padre.getHijo().add(padre2);
+				padre.getHijo().add(b);
+				padre.getHijo().add(padre3);
+				RESULT = padre;
+			:}; 
+
+LISTA_PARAMETROS ::= 	LISTA_PARAMETROS:l s_coma PARAMETRO:p
+						{:
+							l.getHijo().add(p);
+							RESULT = l;
+						:}
+						|PARAMETRO:p{:
+							Nodo padre = new Nodo("LISTA DE PARAMETROS",id++);
+							padre.getHijo().add(p);
+							RESULT = padre;
+						:};
+
+PARAMETRO ::= 	TIPO_VARIABLE:t identificador:i
+				{:	
+					Nodo padre = new Nodo("Parametro",id++);
+					Nodo padre1 = new Nodo("Variable",id++);
+					Nodo hijo1 = new Nodo(i,id++);
+					padre1.getHijo().add(hijo1);
+					padre.getHijo().add(t);
+					padre.getHijo().add(padre1);
+					RESULT = padre;
+				:};
+
+INSTRUCCION_DO_WHILE ::=	r_do:d s_llave_abrir BLOQUE_INSTRUCCIONES:b1 s_llave_cerrar
+							r_while:w s_parentesis_abrir OPERACION_RELACIONAL:o s_parentesis_cerrar
+							s_llave_abrir BLOQUE_INSTRUCCIONES:b2 s_llave_cerrar
+							{:
+								Nodo padre = new Nodo("INSTRUCCION DO WHILE ",id++);
+								Nodo hijo1 = new Nodo(d,id++);
+								Nodo hijo5 = new Nodo(w,id++);
+								padre.getHijo().add(hijo1);
+								padre.getHijo().add(b1);
+								padre.getHijo().add(hijo5);
+								padre.getHijo().add(o);
+								padre.getHijo().add(b2);
+								RESULT = padre;
+							:};
+
+INSTRUCCION_WHILE ::=	r_while:w s_parentesis_abrir OPERACION_RELACIONAL:o s_parentesis_cerrar
+						s_llave_abrir BLOQUE_INSTRUCCIONES:b s_llave_cerrar
+						{:
+							Nodo padre = new Nodo("INSTRUCCION WHILE",id++);
+							padre.getHijo().add(o);
+							padre.getHijo().add(b);
+							RESULT = padre;
+						:};
+
+INSTRUCCION_FOR ::= 	r_for s_parentesis_abrir identificador:i s_igual:s numero:n s_punto_coma
+						OPERACION_RELACIONAL:o1 s_punto_coma OPERACION_INC_DEC:o2 s_parentesis_cerrar 
+						s_llave_abrir BLOQUE_INSTRUCCIONES:b s_llave_cerrar
+						{:
+							Nodo padre = new Nodo("INSTRUCCION FOR",id++);
+							Nodo padre2 = new Nodo("CONDICION INCIAL",id++);
+							Nodo hijo1 = new Nodo(i,id++);
+							Nodo hijo2 = new Nodo(s,id++);
+							Nodo hijo3 = new Nodo(n,id++);
+							padre2.getHijo().add(hijo1);
+							padre2.getHijo().add(hijo2);
+							padre2.getHijo().add(hijo3);
+							padre.getHijo().add(padre2);
+							padre.getHijo().add(o1);
+							padre.getHijo().add(o2);
+							padre.getHijo().add(b);
+							RESULT = padre;
+						:};
+
+INSTRUCCION_IF ::=	r_if s_parentesis_abrir OPERACION_RELACIONAL:o s_parentesis_cerrar 
+					s_llave_abrir BLOQUE_INSTRUCCIONES:b s_llave_cerrar
+					{:
+						Nodo padre = new Nodo("INSTRUCCION IF",id++);
+						padre.getHijo().add(o);
+						padre.getHijo().add(b);
+						RESULT = padre;
+					:};
+
+INSTRUCCION_IF_ELSE ::=	r_if s_parentesis_abrir OPERACION_RELACIONAL:o s_parentesis_cerrar 
+						s_llave_abrir BLOQUE_INSTRUCCIONES:b1 s_llave_cerrar r_else 
+						s_llave_abrir BLOQUE_INSTRUCCIONES:b2 s_llave_cerrar
+						{:
+							Nodo padre = new Nodo("INSTRUCCION IF ELSE",id++);
+							Nodo padre1 = new Nodo("IF",id++);
+							Nodo padre2 = new Nodo("ELSE",id++);
+							padre1.getHijo().add(o);
+							padre1.getHijo().add(b1);
+							padre2.getHijo().add(b2);
+							padre.getHijo().add(padre1);
+							padre.getHijo().add(padre2);
+							RESULT = padre;
+						:};
+
+INSTRUCCION_SWITCH ::=	r_switch s_parentesis_abrir identificador:i s_parentesis_cerrar 
+						s_llave_abrir LISTA_CASOS:l s_llave_cerrar
+						{:
+							Nodo padre = new Nodo("INSTRUCCION SWITCH",id++);
+							Nodo padre1 = new Nodo("Variable", id++);
+							Nodo hijo = new Nodo(i,id++);
+							padre1.getHijo().add(hijo);
+							padre.getHijo().add(padre1);
+							padre.getHijo().add(l);
+							RESULT = padre;
+						:};
+
+LISTA_CASOS ::= LISTA_CASOS:l CASO_DEFAULT:c
+				{:
+					l.getHijo().add(c);
+					RESULT = l;				
+				:}
+				|LISTA_CASOS:l CASO:c
+				{:
+					l.getHijo().add(c);
+					RESULT = l;
+				:}
+				|CASO:c
+				{:
+					Nodo padre = new Nodo("LISTA CASOS",id++);
+					padre.getHijo().add(c);
+					RESULT= padre;
+				:}; 	
+
+CASO ::= 	r_case numero:v s_dos_puntos BLOQUE_INSTRUCCIONES:b
+			{:
+				Nodo padre = new Nodo("CASO",id++);
+				Nodo padre1 = new Nodo("Valor",id++);
+				Nodo hijo1 = new Nodo(v,id++);
+				padre1.getHijo().add(hijo1);
+				padre.getHijo().add(padre1);
+				padre.getHijo().add(b);
+				RESULT = padre;
+			:}
+		 	|r_case numero:v s_dos_puntos BLOQUE_INSTRUCCIONES:b r_break:r s_punto_coma
+		 	{:
+				Nodo padre = new Nodo("CASO",id++);
+				Nodo padre1 = new Nodo("Valor",id++);
+				Nodo hijo1 = new Nodo(v,id++);
+				padre1.getHijo().add(hijo1);
+				Nodo padre2 = new Nodo("Sentencia escape",id++);
+				Nodo hijo2 = new Nodo(r,id++);
+				padre2.getHijo().add(hijo2);
+				padre.getHijo().add(padre1);
+				padre.getHijo().add(b);
+				padre.getHijo().add(padre2);
+				RESULT = padre;
+			:};
+
+CASO_DEFAULT ::= 	r_default s_dos_puntos BLOQUE_INSTRUCCIONES:b
+					{:
+						Nodo padre = new Nodo("NODO_DEFAULT",id++);
+						padre.getHijo().add(b);
+						RESULT = padre;
+					:};
+
+LLAMAR_FUNCION ::=	identificador:i s_parentesis_abrir LISTA_PARAMETROS2:p s_parentesis_cerrar 
+					s_punto_coma
+					{:
+						Nodo padre = new Nodo("LLAMAR FUNCION",id++);
+						Nodo padre1 = new Nodo("Variable", id++);
+						Nodo hijo = new Nodo(i,id++);
+						padre1.getHijo().add(hijo);
+						padre.getHijo().add(padre1);
+						padre.getHijo().add(p);
+						RESULT = padre;
+					:}
+					|identificador:i s_parentesis_abrir s_parentesis_cerrar 
+					s_punto_coma
+					{:
+						Nodo padre = new Nodo("LLAMAR FUNCION",id++);
+						Nodo padre1 = new Nodo("Variable",id++);
+						Nodo hijo = new Nodo(i,id++);
+						padre1.getHijo().add(hijo);
+						padre.getHijo().add(padre1);
+						RESULT = padre;
+					:};
+
+LISTA_PARAMETROS2 ::=	LISTA_PARAMETROS2:l PARAMETROS2:p
+						{:
+							l.getHijo().add(p);
+							RESULT = p;
+						:}
+						|PARAMETROS2:p
+						{:
+							Nodo padre = new Nodo("LISTA_PARAMETROS",id++);
+							padre.getHijo().add(p);
+							RESULT = p;
+						:};
+
+PARAMETROS2 ::= 	identificador:i s_parentesis_abrir LISTA_PARAMETROS2:p s_parentesis_cerrar
+					{:
+						Nodo padre = new Nodo("LLAMAR FUNCION",id++);
+						Nodo padre1 = new Nodo("Variable", id++);
+						Nodo hijo = new Nodo(i,id++);
+						padre1.getHijo().add(hijo);
+						padre.getHijo().add(padre1);
+						padre.getHijo().add(p);
+						RESULT = padre;
+					:}
+					|identificador:i s_parentesis_abrir s_parentesis_cerrar
+					{:
+						Nodo padre = new Nodo("LLAMAR FUNCION",id++);
+						Nodo padre1 = new Nodo("Variable",id++);
+						Nodo hijo = new Nodo(i,id++);
+						padre1.getHijo().add(hijo);
+						padre.getHijo().add(padre1);
+						RESULT = padre;
+					:}
+					|OPERACION_ARITMETICA:o
+					{:
+						RESULT = o;
+					:};
+
+BLOQUE_INSTRUCCIONES ::= 	BLOQUE_INSTRUCCIONES:b LISTA_INSTRUCCIONES:l
+							{:
+								b.getHijo().add(l);
+								RESULT = b;
+							:}
+							|LISTA_INSTRUCCIONES:l
+							{:
+								Nodo padre = new Nodo("LISTA DE INSTRUCCIONES",id++);
+								padre.getHijo().add(l);
+								RESULT = padre;
+							:}
+							|DECLARAR_VARIABLES:l{:
+								Nodo padre = new Nodo("LISTA DE INSTRUCCIONES",id++);
+								padre.getHijo().add(l);
+								RESULT = padre;
+							:};
+
+LISTA_INSTRUCCIONES ::= INSTRUCCION_DO_WHILE:l
+						{:
+							RESULT = l;
+						:}
+						|INSTRUCCION_WHILE:l
+						{:
+							RESULT = l;
+						:}
+						|INSTRUCCION_FOR:l
+						{:
+							RESULT = l;
+						:}
+						|INSTRUCCION_IF:l
+						{:
+							RESULT = l;
+						:}
+						|INSTRUCCION_IF_ELSE:l
+						{:
+							RESULT = l;
+						:}
+						|INSTRUCCION_SWITCH:l
+						{:
+							RESULT = l;
+						:}
+						|LLAMAR_FUNCION:l
+						{:
+							RESULT = l;
+						:};

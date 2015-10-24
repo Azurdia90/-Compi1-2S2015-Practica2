@@ -34,8 +34,11 @@ private void listar_error(String t, int y, int x){
 /* PALABRAS RESERVADAS */ 
 
 "#include"    		{return new Symbol(Tabla_simbolos.r_importar, yycolumn,yyline,new String(yytext()));}
+"case"				{return new Symbol(Tabla_simbolos.r_case, yycolumn,yyline,new String(yytext()));}
 "char"				{return new Symbol(Tabla_simbolos.r_char, yycolumn,yyline,new String(yytext()));}
 "char*"				{return new Symbol(Tabla_simbolos.r_char_asterisco, yycolumn,yyline,new String(yytext()));}
+"break"				{return new Symbol(Tabla_simbolos.r_break, yycolumn,yyline,new String(yytext()));}
+"default"			{return new Symbol(Tabla_simbolos.r_default, yycolumn,yyline,new String(yytext()));}
 "do"				{return new Symbol(Tabla_simbolos.r_do, yycolumn,yyline,new String(yytext()));}
 "else"				{return new Symbol(Tabla_simbolos.r_else, yycolumn,yyline,new String(yytext()));}
 "for"				{return new Symbol(Tabla_simbolos.r_for, yycolumn,yyline,new String(yytext()));}
@@ -44,6 +47,7 @@ private void listar_error(String t, int y, int x){
 "int"				{return new Symbol(Tabla_simbolos.r_int, yycolumn,yyline,new String(yytext()));}
 "main"    			{return new Symbol(Tabla_simbolos.r_main, yycolumn,yyline,new String(yytext()));}
 "switch"			{return new Symbol(Tabla_simbolos.r_switch, yycolumn,yyline,new String(yytext()));}
+"return"			{return new Symbol(Tabla_simbolos.r_return, yycolumn,yyline,new String(yytext()));}
 "while"				{return new Symbol(Tabla_simbolos.r_while, yycolumn,yyline,new String(yytext()));}
 "="					{return new Symbol(Tabla_simbolos.s_igual, yycolumn,yyline,new String(yytext()));}
 ":"					{return new Symbol(Tabla_simbolos.s_dos_puntos, yycolumn,yyline,new String(yytext()));}

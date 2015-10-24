@@ -8,54 +8,61 @@ package Analizadores;
 /** CUP generated class containing symbol constants. */
 public class Tabla_simbolos {
   /* terminals */
-  public static final int r_float = 8;
-  public static final int s_mayor_que = 28;
-  public static final int libreria = 40;
-  public static final int s_incremento = 30;
-  public static final int r_else = 6;
-  public static final int r_switch = 12;
-  public static final int s_llave_abrir = 35;
-  public static final int identificador = 39;
-  public static final int s_division = 25;
-  public static final int s_decremento = 31;
-  public static final int s_mayor_igual = 21;
-  public static final int s_menor_que = 29;
-  public static final int r_char_asterisco = 4;
-  public static final int s_resta = 20;
-  public static final int s_suma = 19;
-  public static final int numero = 41;
-  public static final int s_menor_igual = 22;
-  public static final int s_comilla = 16;
-  public static final int r_if = 9;
+  public static final int r_float = 11;
+  public static final int s_mayor_que = 31;
+  public static final int libreria = 44;
+  public static final int r_return = 42;
+  public static final int s_incremento = 33;
+  public static final int r_else = 9;
+  public static final int r_switch = 15;
+  public static final int s_llave_abrir = 38;
+  public static final int identificador = 43;
+  public static final int r_default = 7;
+  public static final int s_division = 28;
+  public static final int s_decremento = 34;
+  public static final int s_mayor_igual = 24;
+  public static final int s_menor_que = 32;
+  public static final int r_char_asterisco = 5;
+  public static final int s_resta = 23;
+  public static final int s_suma = 22;
+  public static final int numero = 45;
+  public static final int s_menor_igual = 25;
+  public static final int s_comilla = 19;
+  public static final int r_if = 12;
   public static final int EOF = 0;
-  public static final int s_igual = 14;
-  public static final int r_int = 10;
+  public static final int s_igual = 17;
+  public static final int r_int = 13;
   public static final int error = 1;
-  public static final int s_coma = 18;
-  public static final int r_for = 7;
-  public static final int s_llave_cerrar = 36;
+  public static final int s_coma = 21;
+  public static final int r_for = 10;
+  public static final int s_llave_cerrar = 39;
   public static final int r_importar = 2;
-  public static final int r_char = 3;
-  public static final int s_parentesis_abrir = 37;
-  public static final int s_parentesis_cerrar = 38;
-  public static final int s_restar_a = 33;
-  public static final int s_diferencia = 24;
-  public static final int s_multiplicar_a = 34;
-  public static final int s_dos_puntos = 15;
-  public static final int s_multiplicacion = 26;
-  public static final int s_sumar_a = 32;
-  public static final int s_comparacion = 23;
-  public static final int s_porcentaje = 27;
-  public static final int r_main = 11;
-  public static final int s_punto_coma = 17;
-  public static final int r_while = 13;
-  public static final int r_do = 5;
+  public static final int r_char = 4;
+  public static final int s_parentesis_abrir = 40;
+  public static final int s_parentesis_cerrar = 41;
+  public static final int r_case = 3;
+  public static final int s_restar_a = 36;
+  public static final int s_diferencia = 27;
+  public static final int s_multiplicar_a = 37;
+  public static final int s_dos_puntos = 18;
+  public static final int r_break = 6;
+  public static final int s_multiplicacion = 29;
+  public static final int s_sumar_a = 35;
+  public static final int s_comparacion = 26;
+  public static final int s_porcentaje = 30;
+  public static final int r_main = 14;
+  public static final int s_punto_coma = 20;
+  public static final int r_while = 16;
+  public static final int r_do = 8;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
   "r_importar",
+  "r_case",
   "r_char",
   "r_char_asterisco",
+  "r_break",
+  "r_default",
   "r_do",
   "r_else",
   "r_for",
@@ -90,6 +97,7 @@ public class Tabla_simbolos {
   "s_llave_cerrar",
   "s_parentesis_abrir",
   "s_parentesis_cerrar",
+  "r_return",
   "identificador",
   "libreria",
   "numero"
